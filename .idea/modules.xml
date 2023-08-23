@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TraWord.iml" filepath="$PROJECT_DIR$/TraWord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TraWordSal.iml" filepath="$PROJECT_DIR$/TraWordSal.iml" />
     </modules>
   </component>
 </project>

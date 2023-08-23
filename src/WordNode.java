@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class WordNode {
     public String word;
@@ -12,5 +13,15 @@ public class WordNode {
     public WordNode(String word) {
         this.word = word;
         this.neighbours = new ArrayList<WordNode>();
+    }
+
+    @Override
+    public String toString() {
+        return word;
+    }
+
+    public String toFullString() {
+        List<String> neighbourWords = neighbours.stream().map(n -> n.word).toList();
+        return word + ": [" + String.join(", ", neighbourWords) + "]";
     }
 }

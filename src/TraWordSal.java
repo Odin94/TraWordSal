@@ -3,9 +3,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TraWord {
+public class TraWordSal {
     public static void main(String[] args) {
         // Try Hand -> Bank (should be Hand -> Band -> Bank)
+//        TODO: Grab dictionary (eg https://github.com/dwyl/english-words) and store in a graph db?
+//        Could offload pathfinding to database (neo4j seems decent)
+//        Maybe grab a "10.000 most common words" list and search that first before going to ALL words? (more desirable results avoiding words the user doesn't know)
         List<String> dictionary = Arrays.asList(
                 "Band",
                 "Hand",
@@ -16,11 +19,7 @@ public class TraWord {
 
         HashMap<String, WordNode> graph = buildGraph(dictionary);
 
-        graph.forEach((key, value) -> {
-            Object[] neighborWordArray = value.neighbours.stream().map(wordNode -> wordNode.word).toArray();
-            String neighborWordsString = Arrays.toString(neighborWordArray);
-            System.out.println(key + " -> " + neighborWordsString);
-        });
+        graph.forEach((key, value) -> System.out.println(value.toFullString()));
 
         System.out.println("args: " + Arrays.toString(args));
 
@@ -31,7 +30,7 @@ public class TraWord {
     public static void performSearch(HashMap<String, WordNode> graph, String startWord, String endWord) {
         PathFinder pathFinder = new PathFinder(graph);
         System.out.println("Searching for " + startWord + " -> " + endWord);
-        List<WordNode> path = pathFinder.findPath(graph.get(startWord), endWord);
+        List<WordNode> path = pathFinder.aStarSearch(startWord, endWord);
 
         if (path != null) {
             path.stream().map(wordNode -> wordNode.word).forEach(System.out::println);
@@ -43,6 +42,11 @@ public class TraWord {
     // Assumes all words in dictionary have same length
     public static HashMap<String, WordNode> buildGraph(List<String> dictionary) {
         HashMap<String, WordNode> graph = new HashMap<>();
+
+
+//        ls = [1, 2, 3]
+//        int[] lsArr = new int[]{1,2,3};
+//        ArrayList<int> ls = new ArrayList<>(Arrays.asList(lsArr))
 
         for (String word : dictionary) {
             WordNode wordNode = new WordNode(word);
@@ -59,38 +63,12 @@ public class TraWord {
                     continue;
                 }
 
-                if (levenshteinDistance(otherWord, word) == 1) {
+                if (Utils.levenshteinDistance(otherWord, word) == 1) {
                     wordNode.neighbours.add(otherWordNode);
                 }
             }
         });
 
         return graph;
-    }
-
-    // Assumes x and y are non-empty strings of same length (could assert this and
-    // throw if precondition is violated)
-    static int levenshteinDistance(String x, String y) {
-        if (x.isEmpty()) {
-            return y.length();
-        }
-
-        if (y.isEmpty()) {
-            return x.length();
-        }
-
-        try {
-            int substitution = levenshteinDistance(x.substring(1), y.substring(1))
-                    + costOfSubstitution(x.charAt(0), y.charAt(0));
-
-            return substitution;
-        } catch(Exception e) {
-            System.err.println("Words: " + x + ", " + y);
-            throw e;
-        }
-    }
-
-    public static int costOfSubstitution(char a, char b) {
-        return a == b ? 0 : 1;
     }
 }
