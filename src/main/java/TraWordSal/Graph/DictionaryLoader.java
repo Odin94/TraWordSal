@@ -1,8 +1,11 @@
+package TraWordSal.Graph;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,10 +31,10 @@ public class DictionaryLoader {
     }
 
     //    Expects json file formatted like {"1": {"A": {"word": "A", "neighbours": ["B","C","D"] } }, "B": ..., } "2": ... }
-    public static HashMap<Integer, HashMap<String, WordNode>> buildGraphFromJson(String filePath) {
+    public static HashMap<Integer, HashMap<String, WordNode>> buildGraphFromJson(Path filePath) {
         HashMap<Integer, HashMap<String, JsonNode>> jsonGraphs;
         try {
-            String jsonString = Files.readString(Paths.get(filePath));
+            String jsonString = Files.readString(filePath);
             jsonGraphs = new ObjectMapper().readValue(jsonString, new TypeReference<>() {
             });
         } catch (IOException e) {
