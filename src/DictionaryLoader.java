@@ -99,7 +99,7 @@ public class DictionaryLoader {
 
         for (String word : dictionary) {
             int wordLength = word.length();
-            if (wordLength > 4) continue;
+            if (wordLength > 6) continue;
 
             String capitalizedWord = Utils.capitalize(word);
             WordNode wordNode = new WordNode(capitalizedWord);
