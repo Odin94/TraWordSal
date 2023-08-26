@@ -40,6 +40,7 @@ public class PathFinder {
             path.add(0, current);
         }
 
+        resetGraph();
         return path;
     }
 
@@ -74,10 +75,18 @@ public class PathFinder {
             });
         }
 
+        resetGraph();
         return null;
     }
 
     private int getHeuristic(WordNode wordNode, String endWord) {
         return Utils.levenshteinDistance(wordNode.word, endWord);
+    }
+
+    public void resetGraph() {
+        graph.forEach((key, value) -> {
+            value.cost = Integer.MAX_VALUE;
+            value.parent = null;
+        });
     }
 }

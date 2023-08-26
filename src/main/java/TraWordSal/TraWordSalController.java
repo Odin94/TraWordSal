@@ -2,6 +2,7 @@ package TraWordSal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import TraWordSal.Graph.GraphService;
 import TraWordSal.Graph.Utils;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class TraWordSalController {
     @Autowired
     GraphService graphService;
@@ -28,6 +30,8 @@ public class TraWordSalController {
 
         System.out.println("Getting path for " + startWord + " -> " + endWord);
 
-        return graphService.getPath(Utils.capitalize(startWord), Utils.capitalize(endWord));
+        var path = graphService.getPath(Utils.capitalize(startWord), Utils.capitalize(endWord));
+        System.out.println("Got path: " + path);
+        return path;
     }
 }

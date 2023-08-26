@@ -17,9 +17,9 @@ public class GraphService {
     }
 
     public List<String> getPath(String startWord, String endWord) {
-        if (!graphs.containsKey(startWord.length()))
+        if (!graphs.containsKey(startWord.length())) {
             throw new RuntimeException("No graph for word length " + startWord.length());
-
+        }
         var pathFinder = new PathFinder(graphs.get(startWord.length()));
 
         return pathFinder.aStarSearch(startWord, endWord).stream()
