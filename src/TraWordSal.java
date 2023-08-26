@@ -1,6 +1,6 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TraWordSal {
     public static void main(String[] args) {
@@ -13,9 +13,9 @@ public class TraWordSal {
 //        DictionaryLoader.storeGraphs(graphs, "data/graph_of_words_alpha.json");
 
         var graph = graphs.get(4);
-        graph.forEach((key, value) -> System.out.println(value.toFullString()));
+//        graph.forEach((key, value) -> System.out.println(value.toFullString()));
 
-        System.out.println("args: " + Arrays.toString(args));
+//        System.out.println("args: " + Arrays.toString(args));
 
         performSearch(graph, "Hand", "Bank");
         performSearch(graph, "Hand", "Sure");
@@ -27,7 +27,8 @@ public class TraWordSal {
         List<WordNode> path = pathFinder.aStarSearch(startWord, endWord);
 
         if (path != null) {
-            path.stream().map(wordNode -> wordNode.word).forEach(System.out::println);
+            var pathString = path.stream().map(node -> node.word).collect(Collectors.joining(" -> "));
+            System.out.println("Found path: [" + pathString + "]");
         } else {
             System.out.println("No path available");
         }
