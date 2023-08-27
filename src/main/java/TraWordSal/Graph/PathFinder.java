@@ -50,8 +50,11 @@ public class PathFinder {
         openSet.add(startNode);
 
         var takenSteps = 0;
+        var limit = onlyEasyPaths ? 3000 : 20000;
         while (!openSet.isEmpty()) {
-            if (onlyEasyPaths && takenSteps > 3000) {
+//            TODO: There is some issue with the algorithm where things sometimes loop for a while, eg. with Fumy -> Tosh
+//            Maybe caused by multiple requests on the same graph causing issues? (only resets at the end, shouldn't handle two at once with the same data structure - make service create a new graph for each request?)
+            if (onlyEasyPaths && takenSteps > limit) {
                 return null;
             }
             WordNode current = openSet.stream().min((lNeighbour, rNeighbour) -> {

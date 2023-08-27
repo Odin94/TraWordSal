@@ -9,6 +9,7 @@ import AppHeader from './components/AppHeader';
 import NoPage from './pages/NoPage';
 import PathFinder from './pages/PathFinder';
 import TraWordSal from './pages/TraWordSal';
+import PickYourOwn from './pages/PickYourOwn';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<AppHeader />}>
             <Route index element={<TraWordSal />} />
             <Route path="pathFinder" element={<PathFinder />} />
+            <Route path="pickYourOwn" element={<PickYourOwn />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>

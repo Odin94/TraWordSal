@@ -11,7 +11,8 @@ const AppHeader = () => {
                     <Center>
                         <Group>
                             <Link to="/" style={{ textDecoration: "none" }}><Text fz={20} c={"black"}>Game</Text></Link>
-                            <Link to="/pathFinder" style={{ textDecoration: "none" }}><Text fz={20} c={"black"}>Find paths</Text></Link>
+                            <Link to="/pickYourOwn" style={{ textDecoration: "none" }}><Text fz={20} c={"black"}>Pick your own</Text></Link>
+                            <Link to="/pathFinder" style={{ textDecoration: "none" }}><Text fz={20} c={"black"}>Get Solutions</Text></Link>
                         </Group>
                     </Center>
                 }</Header>}

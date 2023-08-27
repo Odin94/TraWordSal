@@ -30,9 +30,7 @@ const PathFinder = () => {
             const response = await fetch(`${baseUrl}/getPath?startWord=${startWord}&endWord=${endWord}`)
             const responseJson = await response.json()
 
-            if (response?.ok) {
-                console.log('Use the response here!');
-            } else {
+            if (!response?.ok) {
                 throw new Error(`Error: ${response.status} - ${responseJson.message}`)
             }
             setPath(responseJson)
@@ -49,7 +47,7 @@ const PathFinder = () => {
                 <Group>
                     <TextInput placeholder="Start word" value={startWord} onChange={(event) => setStartWord(event.currentTarget.value)} />
                     <TextInput placeholder="End word" value={endWord} onChange={(event) => setEndWord(event.currentTarget.value)} />
-                    <Button onClick={getPath} variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }}>Get Path</Button>
+                    <Button onClick={getPath} variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }}>Get Solution</Button>
                 </Group>
             </Center>
 

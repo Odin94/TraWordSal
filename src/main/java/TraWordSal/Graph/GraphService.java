@@ -27,7 +27,7 @@ public class GraphService {
         var path = pathFinder.aStarSearch(startWord, endWord, onlyEasyPaths);
 
         if (path != null) {
-            return pathFinder.aStarSearch(startWord, endWord, onlyEasyPaths).stream()
+            return path.stream()
                     .map(node -> node.word)
                     .toList();
         }
