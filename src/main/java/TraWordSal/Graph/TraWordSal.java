@@ -26,7 +26,7 @@ public class TraWordSal {
     public static void performSearch(HashMap<String, WordNode> graph, String startWord, String endWord) {
         PathFinder pathFinder = new PathFinder(graph);
         System.out.println("Searching for " + startWord + " -> " + endWord);
-        List<WordNode> path = pathFinder.aStarSearch(startWord, endWord);
+        List<WordNode> path = pathFinder.aStarSearch(startWord, endWord, false);
 
         if (path != null) {
             var pathString = path.stream().map(node -> node.word).collect(Collectors.joining(" -> "));

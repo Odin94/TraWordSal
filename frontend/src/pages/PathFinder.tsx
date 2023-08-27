@@ -1,16 +1,21 @@
-import { Container, Text, Center, TextInput, Button, Group } from "@mantine/core"
+import { Button, Center, Group, Loader, Text, TextInput } from "@mantine/core";
 import { useState } from "react";
+import { getBaseUrl } from "../globals";
 
 
 const PathFinder = () => {
+    const baseUrl = getBaseUrl()
     const [startWord, setStartWord] = useState('')
     const [endWord, setEndWord] = useState('')
 
-    const [path, setPath] = useState([])
+    const [path, setPath] = useState<string[]>([])
     const [error, setError] = useState("")
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const getPath = async () => {
         setError("")
+        setIsLoading(true)
 
         if (startWord.length === 0) {
             setError("Words can't be empty")
@@ -21,29 +26,25 @@ const PathFinder = () => {
             return
         }
 
-        console.log(startWord)
-        console.log(endWord)
-
-        // TODO: Put base-path in env var
         try {
-            const response = await fetch(`http://localhost:8080/getPath?startWord=${startWord}&endWord=${endWord}`)
-            const path = await response.json()
-            setPath(path)
+            const response = await fetch(`${baseUrl}/getPath?startWord=${startWord}&endWord=${endWord}`)
+            const responseJson = await response.json()
+
+            if (response?.ok) {
+                console.log('Use the response here!');
+            } else {
+                throw new Error(`Error: ${response.status} - ${responseJson.message}`)
+            }
+            setPath(responseJson)
         } catch (e) {
             setError((e as Error).message)
+        } finally {
+            setIsLoading(false)
         }
     }
 
     return (
-        <Container mt={30}>
-            <Center>
-                <Text fz={"50px"} fw={"bold"} italic>TraWordSal</Text>
-            </Center>
-
-            <Center>
-                <Text fz={"18px"} color="gray" italic>Find a path from one word to another using only valid words and changing only one letter at a time</Text>
-            </Center>
-
+        <>
             <Center mt={30}>
                 <Group>
                     <TextInput placeholder="Start word" value={startWord} onChange={(event) => setStartWord(event.currentTarget.value)} />
@@ -53,13 +54,18 @@ const PathFinder = () => {
             </Center>
 
             <Center mt={30}>
-                <Text fz={"24px"}>{path.join(" -> ")}</Text>
+                {isLoading
+                    ? <Loader />
+                    :
+                    <Text fz={"24px"}>{path.join(" -> ")}</Text>
+                }
             </Center>
+
 
             <Center mt={30}>
                 <Text fz={"24px"} c={"red"}>{error}</Text>
             </Center>
-        </Container>
+        </>
     )
 }
 

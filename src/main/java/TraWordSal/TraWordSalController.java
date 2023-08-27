@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import TraWordSal.Graph.Entities.GetWordsResponse;
 import TraWordSal.Graph.GraphService;
 import TraWordSal.Graph.Utils;
 
@@ -30,8 +31,31 @@ public class TraWordSalController {
 
         System.out.println("Getting path for " + startWord + " -> " + endWord);
 
-        var path = graphService.getPath(Utils.capitalize(startWord), Utils.capitalize(endWord));
+        var path = graphService.findPath(Utils.capitalize(startWord), Utils.capitalize(endWord), false);
         System.out.println("Got path: " + path);
         return path;
+    }
+
+    @GetMapping("/getNeighbours")
+    public List<String> getPath(@RequestParam(value = "word") String word) {
+        if (word == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "'word' request param is required");
+        }
+
+        System.out.println("Getting neighbours for " + word);
+
+        var neighbours = graphService.getNeighbours(word);
+        System.out.println("Got neighbours: " + neighbours);
+        return neighbours;
+    }
+
+    @GetMapping("/getWords")
+    public GetWordsResponse getWords() {
+        System.out.println("Getting words");
+
+        var wordsResponse = graphService.getWords();
+        System.out.println("Got words: " + wordsResponse.startWord + " -> " + wordsResponse.endWord);
+
+        return wordsResponse;
     }
 }

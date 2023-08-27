@@ -1,5 +1,7 @@
 package TraWordSal.Graph;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Utils {
     public static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
@@ -30,6 +32,10 @@ public class Utils {
 
     public static int costOfSubstitution(char a, char b) {
         return a == b ? 0 : 1;
+    }
+
+    public static int rnd(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }
 

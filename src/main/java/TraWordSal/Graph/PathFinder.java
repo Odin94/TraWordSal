@@ -15,7 +15,7 @@ public class PathFinder {
         this.encounteredNodes = new HashSet<>();
     }
 
-    public List<WordNode> aStarSearch(String startWord, String endWord) {
+    public List<WordNode> aStarSearch(String startWord, String endWord, boolean onlyEasyPaths) {
         String capitalizedStartWord = Utils.capitalize(startWord);
         String capitalizedEndWord = Utils.capitalize(endWord);
 
@@ -28,7 +28,7 @@ public class PathFinder {
             throw new RuntimeException("End word '" + capitalizedEndWord + "' is not in dictionary");
         }
 
-        return aStarSearch(startNode, endWord);
+        return aStarSearch(startNode, endWord, onlyEasyPaths);
     }
 
     private List<WordNode> reconstructPath(WordNode current) {
@@ -44,12 +44,16 @@ public class PathFinder {
         return path;
     }
 
-    private List<WordNode> aStarSearch(WordNode startNode, String endWord) {
+    private List<WordNode> aStarSearch(WordNode startNode, String endWord, boolean onlyEasyPaths) {
         startNode.cost = 0;
         ArrayList<WordNode> openSet = new ArrayList<>();
         openSet.add(startNode);
 
+        var takenSteps = 0;
         while (!openSet.isEmpty()) {
+            if (onlyEasyPaths && takenSteps > 3000) {
+                return null;
+            }
             WordNode current = openSet.stream().min((lNeighbour, rNeighbour) -> {
                 int lNeighbourScore = getHeuristic(lNeighbour, endWord) + lNeighbour.cost;
                 int rNeighbourScore = getHeuristic(rNeighbour, endWord) + rNeighbour.cost;
@@ -73,6 +77,8 @@ public class PathFinder {
                     openSet.add(n);
                 }
             });
+
+            takenSteps++;
         }
 
         resetGraph();

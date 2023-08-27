@@ -1,13 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import { Container } from '@mantine/core';
+import {
+  BrowserRouter,
+  Route,
+  Routes
+} from "react-router-dom";
 import './App.css';
+import AppHeader from './components/AppHeader';
+import NoPage from './pages/NoPage';
 import PathFinder from './pages/PathFinder';
+import TraWordSal from './pages/TraWordSal';
 
 function App() {
   return (
-    <div className="App">
-      <PathFinder />
-    </div>
+    <Container mt={30}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppHeader />}>
+            <Route index element={<TraWordSal />} />
+            <Route path="pathFinder" element={<PathFinder />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Container>
   );
 }
 
